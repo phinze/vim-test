@@ -30,6 +30,11 @@ function! test#go#gotest#executable() abort
 endfunction
 
 function! s:nearest_test(position) abort
-  let name = test#base#nearest_test(a:position, g:test#go#patterns)
-  return join(name['test'])
+  let testDetails = test#base#nearest_test(a:position, g:test#go#patterns)
+  if empty(testDetails["namespace"])
+    return ""
+  elseif empty(testDetails["test"])
+    return join(testDetails["namespace"])
+  else
+    return join(testDetails["namespace"]).'/'.join(testDetails["test"])
 endfunction
